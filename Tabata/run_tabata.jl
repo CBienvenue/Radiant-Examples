@@ -223,6 +223,6 @@ function run_tabata(N_benchmark::Int64)
     xlabel("Depth (cm)",fontsize=14)
     ylabel("Charge deposition (cm²/g)",fontsize=14)
     tight_layout()
-    savefig(joinpath(@__DIR__,"tabata_$(N_benchmark)_$(material)_$(energy)MeV.png"), dpi=300)
+    savefig(joinpath(@__DIR__,"/results/tabata_$(N_benchmark)_$(material)_$(energy)MeV.png"), dpi=300)
 
 end

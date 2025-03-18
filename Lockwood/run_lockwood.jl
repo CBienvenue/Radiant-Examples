@@ -273,6 +273,6 @@ function run_lockwood(N_benchmark::Int64)
     xlabel("Depth (cm)",fontsize=14)
     ylabel("Energy deposition (MeV/g × cm²)",fontsize=14)
     tight_layout()
-    savefig(joinpath(@__DIR__,"lockwood_$(N_benchmark)_$(join(material_names,"-"))_$(energy)MeV.png"), dpi=300)
+    savefig(joinpath(@__DIR__,"/results/lockwood_$(N_benchmark)_$(join(material_names,"-"))_$(energy)MeV.png"), dpi=300)
 
 end
