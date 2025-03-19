@@ -1,13 +1,45 @@
 """
-    get_lockwood_data(materials::Vector{String},energy::Float64)
+    get_lockwood_data(N_benchmark::Int64)
 
 Get the data from Lockwood's benchmarks.
 
 # Input Argument(s)
-- `materials::Vector{String}` : list of the materials composing the slab assembly.
-- `energy::Float64` : energy of the normally incident electrons [in MeV].
+- `N_benchmark::Int64` : number corresponding to the following Lockwood's benchmark:
+    - `1`  : Be - 1.033 MeV
+    - `2`  : Be - 0.521 MeV
+    - `3`  : Be - 0.314 MeV
+    - `4`  : Be - 0.109 MeV
+    - `5`  : Be - 0.058 MeV
+    - `6`  : C - 1.0 MeV
+    - `7`  : Al - 1.033 MeV
+    - `8`  : Al - 0.521 MeV
+    - `9`  : Al - 0.314 MeV
+    - `10` : Fe - 1.0 MeV
+    - `11` : Fe - 0.5 MeV
+    - `12` : Fe - 0.3 MeV
+    - `13` : Cu - 1.0 MeV
+    - `14` : Cu - 0.5 MeV
+    - `15` : Cu - 0.3 MeV
+    - `16` : Mo - 1.0 MeV
+    - `17` : Mo - 0.5 MeV
+    - `18` : Mo - 0.3 MeV
+    - `19` : Mo - 0.1 MeV
+    - `20` : Ta - 1.033 MeV
+    - `21` : Ta - 0.521 MeV
+    - `22` : Ta - 0.314 MeV
+    - `23` : U - 1.0 MeV
+    - `24` : U - 0.5 MeV
+    - `25` : U - 0.3 MeV
+    - `26` : Be/Au/Be - 1.0 MeV
+    - `27` : C/Cu/C - 1.0 MeV
+    - `28` : C/Ta/C - 1.0 MeV
+    - `29` : C/Au/C - 1.0 MeV
+    - `30` : C/U/C - 1.0 MeV
+    - `31` : Al/Au/Al - 1.0 MeV
 
 # Output Argument(s)
+- `materials::Vector{String}` : list of the materials composing the slab assembly.
+- `energy::Float64` : energy of the normally incident electrons [in MeV].
 - `x::Vector{Float64}` : position of the experimental data in the slab assembly [in cm].
 - `dose::Vector{Float64}` : experimental energy deposition [in MeV/g × cm²].
 - `uncertainty::Vector{Float64}` : experimental uncertainty [in MeV/g × cm²].
@@ -18,7 +50,105 @@ Get the data from Lockwood's benchmarks.
   Media - Theory vs Experiment.
 
 """
-function get_lockwood_data(materials::Vector{String},energy::Float64)
+function get_lockwood_data(N_benchmark::Int64)
+
+    # Benchmark parameters -------------------------
+    if N_benchmark == 1
+        materials = ["be"] 
+        energy = 1.033
+    elseif N_benchmark == 2
+        materials = ["be"] 
+        energy = 0.521
+    elseif N_benchmark == 3
+        materials = ["be"] 
+        energy = 0.314
+    elseif N_benchmark == 4
+        materials = ["be"] 
+        energy = 0.109
+    elseif N_benchmark == 5
+        materials = ["be"] 
+        energy = 0.058
+    elseif N_benchmark == 6
+        materials = ["c"] 
+        energy = 1.0
+    elseif N_benchmark == 7
+        materials = ["al"] 
+        energy = 1.033
+    elseif N_benchmark == 8
+        materials = ["al"] 
+        energy = 0.521
+    elseif N_benchmark == 9
+        materials = ["al"] 
+        energy = 0.314
+    elseif N_benchmark == 10
+        materials = ["fe"] 
+        energy = 1.0
+    elseif N_benchmark == 11
+        materials = ["fe"] 
+        energy = 0.5
+    elseif N_benchmark == 12
+        materials = ["fe"] 
+        energy = 0.3
+    elseif N_benchmark == 13
+        materials = ["cu"] 
+        energy = 1.0
+    elseif N_benchmark == 14
+        materials = ["cu"] 
+        energy = 0.5
+    elseif N_benchmark == 15
+        materials = ["cu"] 
+        energy = 0.3
+    elseif N_benchmark == 16
+        materials = ["mo"] 
+        energy = 1.0
+    elseif N_benchmark == 17
+        materials = ["mo"] 
+        energy = 0.5
+    elseif N_benchmark == 18
+        materials = ["mo"] 
+        energy = 0.3
+    elseif N_benchmark == 19
+        materials = ["mo"] 
+        energy = 0.1
+    elseif N_benchmark == 20
+        materials = ["ta"] 
+        energy = 1.033
+    elseif N_benchmark == 21
+        materials = ["ta"] 
+        energy = 0.521
+    elseif N_benchmark == 22
+        materials = ["ta"] 
+        energy = 0.314
+    elseif N_benchmark == 23
+        materials = ["u"] 
+        energy = 1.0
+    elseif N_benchmark == 24
+        materials = ["u"] 
+        energy = 0.5
+    elseif N_benchmark == 25
+        materials = ["u"] 
+        energy = 0.3
+    elseif N_benchmark == 26
+        materials = ["be","au","be"] 
+        energy = 1.0
+    elseif N_benchmark == 27
+        materials = ["c","u","c"] 
+        energy = 1.0
+    elseif N_benchmark == 28
+        materials = ["c","ta","c"] 
+        energy = 1.0
+    elseif N_benchmark == 29
+        materials = ["c","au","c"] 
+        energy = 1.0
+    elseif N_benchmark == 30
+        materials = ["c","u","c"] 
+        energy = 1.0
+    elseif N_benchmark == 31
+        materials = ["al","au","al"] 
+        energy = 1.0
+    else
+        error("Unknown benchmark.")
+    end
 
     if materials == ["be"] && energy == 1.033
 
@@ -265,6 +395,6 @@ function get_lockwood_data(materials::Vector{String},energy::Float64)
         error("Unknown benchmark with materials $materials and energy $energy MeV.")
     end
 
-    return x, dose, uncertainty, bounds
+    return materials, energy, x, dose, uncertainty, bounds
 
 end

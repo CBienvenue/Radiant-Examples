@@ -1,8 +1,7 @@
 # Import package
 using Radiant
-using PyCall
-using PyPlot
-pygui(true)
+using Plots
+gr(fmt=:png, dpi=300)
 
 # Import benchmark-related functions
 include("get_tabata_data.jl")

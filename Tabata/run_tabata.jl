@@ -39,80 +39,9 @@ Run transport calculations with Radiant for a given Tabata's benchmark.
 
 """
 function run_tabata(N_benchmark::Int64)
-
-    # Benchmark parameters -------------------------
-    if N_benchmark == 1
-        material = "be" 
-        energy = 4.09
-    elseif N_benchmark == 2
-        material = "be"
-        energy = 11.5
-    elseif N_benchmark == 3
-        material = "al" 
-        energy = 4.09
-    elseif N_benchmark == 4
-        material = "al" 
-        energy = 7.79
-    elseif N_benchmark == 5
-        material = "al" 
-        energy = 11.5
-    elseif N_benchmark == 6
-        material = "al" 
-        energy = 14.9
-    elseif N_benchmark == 7
-        material = "al" 
-        energy = 23.5
-    elseif N_benchmark == 8
-        material = "cu" 
-        energy = 4.09
-    elseif N_benchmark == 9
-        material = "cu"
-        energy = 7.79
-    elseif N_benchmark == 10
-        material = "cu"
-        energy = 11.5
-    elseif N_benchmark == 11
-        material = "cu" 
-        energy = 14.9
-    elseif N_benchmark == 12
-        material = "cu"
-        energy = 23.5
-    elseif N_benchmark == 13
-        material = "ag"
-        energy = 4.09
-    elseif N_benchmark == 14
-        material = "ag"
-        energy = 7.79
-    elseif N_benchmark == 15
-        material = "ag" 
-        energy = 11.5
-    elseif N_benchmark == 16
-        material = "ag" 
-        energy = 14.9
-    elseif N_benchmark == 17
-        material = "ag" 
-        energy = 23.5
-    elseif N_benchmark == 18
-        material = "au" 
-        energy = 4.09
-    elseif N_benchmark == 19
-        material = "au" 
-        energy = 7.79
-    elseif N_benchmark == 20
-        material = "au"
-        energy = 11.5
-    elseif N_benchmark == 21
-        material = "au" 
-        energy = 14.9
-    elseif N_benchmark == 22
-        material = "au" 
-        energy = 23.5
-    else
-        error("Unknown benchmark.")
-    end
     
     # Get Lockwood data -------------------------
-    x_exp, charge_exp, uncertainty_exp, bounds = get_tabata_data(material,energy)
+    material, energy, x_exp, charge_exp, uncertainty_exp, bounds = get_tabata_data(N_benchmark)
 
     # Define materials -------------------------
     mat = Material()
@@ -213,16 +142,11 @@ function run_tabata(N_benchmark::Int64)
     c1.set_sources(s)
     c1.run()
     
-    # Plot graph --------------
+    # Plot graph --------------\
     x = c1.get_voxels_position("x")
     charge = c1.get_charge_deposition()
-    figure(1)
-    clf()
-    plot(x,charge)
-    errorbar(x_exp,charge_exp,yerr=uncertainty_exp,fmt=".",color="black", ecolor="black",capsize=2)
-    xlabel("Depth (cm)",fontsize=14)
-    ylabel("Charge deposition (cm²/g)",fontsize=14)
-    tight_layout()
-    savefig(joinpath(@__DIR__,"/results/tabata_$(N_benchmark)_$(material)_$(energy)MeV.png"), dpi=300)
+    p = plot(x, charge, label="Radiant", xlabel="Depth (cm)", ylabel="Charge deposition (cm²/g)", fontsize=14)
+    scatter!(p, x_exp, charge_exp, yerr=uncertainty_exp, label="Experimental data", marker=:circle, color=:black, error_bar_color=:black, linewidth=1, legend=:topright, markersize=3)
+    savefig(p, joinpath(@__DIR__, "results/tabata_$(N_benchmark)_$(material)_$(energy)MeV.png"))
 
 end

@@ -48,107 +48,9 @@ Run transport calculations with Radiant for a given Lockwood's benchmark.
 
 """
 function run_lockwood(N_benchmark::Int64)
-
-    # Benchmark parameters -------------------------
-    if N_benchmark == 1
-        material_names = ["be"] 
-        energy = 1.033
-    elseif N_benchmark == 2
-        material_names = ["be"] 
-        energy = 0.521
-    elseif N_benchmark == 3
-        material_names = ["be"] 
-        energy = 0.314
-    elseif N_benchmark == 4
-        material_names = ["be"] 
-        energy = 0.109
-    elseif N_benchmark == 5
-        material_names = ["be"] 
-        energy = 0.058
-    elseif N_benchmark == 6
-        material_names = ["c"] 
-        energy = 1.0
-    elseif N_benchmark == 7
-        material_names = ["al"] 
-        energy = 1.033
-    elseif N_benchmark == 8
-        material_names = ["al"] 
-        energy = 0.521
-    elseif N_benchmark == 9
-        material_names = ["al"] 
-        energy = 0.314
-    elseif N_benchmark == 10
-        material_names = ["fe"] 
-        energy = 1.0
-    elseif N_benchmark == 11
-        material_names = ["fe"] 
-        energy = 0.5
-    elseif N_benchmark == 12
-        material_names = ["fe"] 
-        energy = 0.3
-    elseif N_benchmark == 13
-        material_names = ["cu"] 
-        energy = 1.0
-    elseif N_benchmark == 14
-        material_names = ["cu"] 
-        energy = 0.5
-    elseif N_benchmark == 15
-        material_names = ["cu"] 
-        energy = 0.3
-    elseif N_benchmark == 16
-        material_names = ["mo"] 
-        energy = 1.0
-    elseif N_benchmark == 17
-        material_names = ["mo"] 
-        energy = 0.5
-    elseif N_benchmark == 18
-        material_names = ["mo"] 
-        energy = 0.3
-    elseif N_benchmark == 19
-        material_names = ["mo"] 
-        energy = 0.1
-    elseif N_benchmark == 20
-        material_names = ["ta"] 
-        energy = 1.033
-    elseif N_benchmark == 21
-        material_names = ["ta"] 
-        energy = 0.521
-    elseif N_benchmark == 22
-        material_names = ["ta"] 
-        energy = 0.314
-    elseif N_benchmark == 23
-        material_names = ["u"] 
-        energy = 1.0
-    elseif N_benchmark == 24
-        material_names = ["u"] 
-        energy = 0.5
-    elseif N_benchmark == 25
-        material_names = ["u"] 
-        energy = 0.3
-    elseif N_benchmark == 26
-        material_names = ["be","au","be"] 
-        energy = 1.0
-    elseif N_benchmark == 27
-        material_names = ["c","u","c"] 
-        energy = 1.0
-    elseif N_benchmark == 28
-        material_names = ["c","ta","c"] 
-        energy = 1.0
-    elseif N_benchmark == 29
-        material_names = ["c","au","c"] 
-        energy = 1.0
-    elseif N_benchmark == 30
-        material_names = ["c","u","c"] 
-        energy = 1.0
-    elseif N_benchmark == 31
-        material_names = ["al","au","al"] 
-        energy = 1.0
-    else
-        error("Unknown benchmark.")
-    end
     
     # Get Lockwood data -------------------------
-    x_exp, dose_exp, uncertainty_exp, bounds = get_lockwood_data(material_names,energy)
+    material_names, energy, x_exp, dose_exp, uncertainty_exp, bounds = get_lockwood_data(N_benchmark)
 
     # Define materials -------------------------
     i = 1
@@ -266,13 +168,9 @@ function run_lockwood(N_benchmark::Int64)
     # Plot graph --------------
     x = c1.get_voxels_position("x")
     dose = c1.get_energy_deposition()
-    figure(1)
-    clf()
-    plot(x,dose)
-    errorbar(x_exp,dose_exp,yerr=uncertainty_exp,fmt=".",color="black", ecolor="black",capsize=2)
-    xlabel("Depth (cm)",fontsize=14)
-    ylabel("Energy deposition (MeV/g × cm²)",fontsize=14)
-    tight_layout()
-    savefig(joinpath(@__DIR__,"/results/lockwood_$(N_benchmark)_$(join(material_names,"-"))_$(energy)MeV.png"), dpi=300)
+
+    p = plot(x, dose, label="Radiant", xlabel="Depth (cm)", ylabel="Energy deposition (MeV/g × cm²)", fontsize=14)
+    scatter!(p, x_exp, dose_exp, yerr=uncertainty_exp, label="Experimental data", marker=:circle, color=:black, error_bar_color=:black, linewidth=1, legend=:topright, markersize=3)
+    savefig(p, joinpath(@__DIR__, "results/lockwood_$(N_benchmark)_$(join(material_names, "-"))_$(energy)MeV.png"))
 
 end

@@ -1,13 +1,36 @@
 """
-    get_tabata_data(material::String,energy::Float64)
+    get_tabata_data(N_benchmark::Int64)
 
 Get the data from Tabata's benchmarks.
 
 # Input Argument(s)
-- `materials::Vector{String}` : list of the materials composing the slab assembly.
-- `energy::Float64` : energy of the normally incident electrons [in MeV].
+- `N_benchmark::Int64` : number corresponding to the following Lockwood's benchmark:
+    - `1`  : Be - 4.09 MeV
+    - `2`  : Be - 11.5 MeV
+    - `3`  : Al - 4.09 MeV
+    - `4`  : Al - 7.79 MeV
+    - `5`  : Al - 11.5 MeV
+    - `6`  : Al - 14.9 MeV
+    - `7`  : Al - 23.5 MeV
+    - `8`  : Cu - 4.09 MeV
+    - `9`  : Cu - 7.79 MeV
+    - `10`  : Cu - 11.5 MeV
+    - `11`  : Cu - 14.9 MeV
+    - `12`  : Cu - 23.5 MeV
+    - `13`  : Ag - 4.09 MeV
+    - `14`  : Ag - 7.79 MeV
+    - `15`  : Ag - 11.5 MeV
+    - `16`  : Ag - 14.9 MeV
+    - `17`  : Ag - 23.5 MeV
+    - `18`  : Au - 4.09 MeV
+    - `19`  : Au - 7.79 MeV
+    - `20`  : Au - 11.5 MeV
+    - `21`  : Au - 14.9 MeV
+    - `22`  : Au - 23.5 MeV
 
 # Output Argument(s)
+- `materials::String` : list of the materials composing the slab assembly.
+- `energy::Float64` : energy of the normally incident electrons [in MeV].
 - `x::Vector{Float64}` : position of the experimental data in the slab assembly [in cm].
 - `charge::Vector{Float64}` : experimental charge deposition [in cm²/g].
 - `Δcharge::Vector{Float64}` : experimental Δcharge [in cm²/g].
@@ -21,7 +44,78 @@ Get the data from Tabata's benchmarks.
   Electrons.
 
 """
-function get_tabata_data(material::String,energy::Float64)
+function get_tabata_data(N_benchmark::Int64)
+
+    # Benchmark parameters -------------------------
+    if N_benchmark == 1
+        material = "be" 
+        energy = 4.09
+    elseif N_benchmark == 2
+        material = "be"
+        energy = 11.5
+    elseif N_benchmark == 3
+        material = "al" 
+        energy = 4.09
+    elseif N_benchmark == 4
+        material = "al" 
+        energy = 7.79
+    elseif N_benchmark == 5
+        material = "al" 
+        energy = 11.5
+    elseif N_benchmark == 6
+        material = "al" 
+        energy = 14.9
+    elseif N_benchmark == 7
+        material = "al" 
+        energy = 23.5
+    elseif N_benchmark == 8
+        material = "cu" 
+        energy = 4.09
+    elseif N_benchmark == 9
+        material = "cu"
+        energy = 7.79
+    elseif N_benchmark == 10
+        material = "cu"
+        energy = 11.5
+    elseif N_benchmark == 11
+        material = "cu" 
+        energy = 14.9
+    elseif N_benchmark == 12
+        material = "cu"
+        energy = 23.5
+    elseif N_benchmark == 13
+        material = "ag"
+        energy = 4.09
+    elseif N_benchmark == 14
+        material = "ag"
+        energy = 7.79
+    elseif N_benchmark == 15
+        material = "ag" 
+        energy = 11.5
+    elseif N_benchmark == 16
+        material = "ag" 
+        energy = 14.9
+    elseif N_benchmark == 17
+        material = "ag" 
+        energy = 23.5
+    elseif N_benchmark == 18
+        material = "au" 
+        energy = 4.09
+    elseif N_benchmark == 19
+        material = "au" 
+        energy = 7.79
+    elseif N_benchmark == 20
+        material = "au"
+        energy = 11.5
+    elseif N_benchmark == 21
+        material = "au" 
+        energy = 14.9
+    elseif N_benchmark == 22
+        material = "au" 
+        energy = 23.5
+    else
+        error("Unknown benchmark.")
+    end
 
     # -----
     # Data from Tabata et al. (1971-A)
@@ -239,5 +333,5 @@ function get_tabata_data(material::String,energy::Float64)
     #-----
     bounds = [0.0,1.2*x[end]]
                        
-    return x, charge, uncertainty, bounds
+    return material, energy, x, charge, uncertainty, bounds
 end
