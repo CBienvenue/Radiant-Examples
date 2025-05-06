@@ -84,9 +84,8 @@ function run_lockwood(N_benchmark::Int64)
     cs.set_cutoff(0.001)
     cs.set_number_of_groups(80)
     cs.set_group_structure("log")
-    cs.set_interactions([Inelastic_Leptons(),Elastic_Leptons(),Bremsstrahlung(),Pair_Production(),Photoelectric(),Rayleigh(),Compton(),Auger(),Fluorescence(),Annihilation()])
+    cs.set_interactions([Inelastic_Collision(),Elastic_Collision(),Bremsstrahlung(),Pair_Production(),Photoelectric(),Rayleigh(),Compton(),Auger(),Fluorescence(),Annihilation()])
     cs.set_legendre_order(15)
-    cs.build()
 
     # Define geometry -------------------------
     N_slabs = length(material_slabs)
@@ -99,7 +98,6 @@ function run_lockwood(N_benchmark::Int64)
     geo.set_number_of_regions("X",N_slabs)
     geo.set_voxels_per_region("X",80*ones(Int64,N_slabs))
     geo.set_region_boundaries("X",bounds)
-    geo.build(cs)
 
     # Define methods ----------------
     m1 = Discrete_Ordinates()
